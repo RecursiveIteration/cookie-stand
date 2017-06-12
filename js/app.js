@@ -55,8 +55,8 @@ var seattleCenter = {
   }
 };
 
-var capitalHill = {
-  location: 'Capital Hill',
+var capitolHill = {
+  location: 'Capitol Hill',
   hourlySales: [],
   minCustomersPerHour: 20,
   maxCustomersPerHour: 38,
@@ -93,7 +93,7 @@ var stores = [
   firstAndPike,
   seaTacAirport,
   seattleCenter,
-  capitalHill,
+  capitolHill,
   alki
 ];
 
