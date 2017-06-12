@@ -88,3 +88,54 @@ var alki = {
     this.hourlySales[hour] = this.calcCookieSales();
   }
 };
+
+var stores = [
+  firstAndPike,
+  seaTacAirport,
+  seattleCenter,
+  capitalHill,
+  alki
+];
+
+function setAllSales (storeList) {
+  for (var i in storeList) {
+    for (var j = 8; j <= 19; j++) {
+      storeList[i].setHourlySales(j);
+    }
+  }
+}
+
+function getHourAsText(hour) {
+  if (hour < 12) {
+    return hour + 'am';
+  } else if (hour == 12) {
+    return hour + 'pm';
+  } else {
+    return (hour - 12) + 'pm';
+  }
+}
+
+setAllSales(stores);
+
+var parentEl = document.getElementById('storeSales');
+
+function addStoreSales (store) {
+  var div = document.createElement('div');
+  div.setAttribute('class', 'salesData'); //may use later for css formatting
+  parentEl.appendChild(div);
+  var p = document.createElement('p');
+  p.textContent = store.location;
+  div.appendChild(p);
+  //create the undordered list
+  var ul = document.createElement('ul');
+  div.appendChild(ul);
+  for (var i in store.hourlySales) {
+    var li = document.createElement('li');
+    li.textContent = getHourAsText(i) + ': ' + store.hourlySales[i] + ' cookies';
+    ul.appendChild(li);
+  }
+}
+
+for (var i in stores) {
+  addStoreSales(stores[i]);
+}
