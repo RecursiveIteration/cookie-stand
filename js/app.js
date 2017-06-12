@@ -129,11 +129,16 @@ function addStoreSales (store) {
   //create the undordered list
   var ul = document.createElement('ul');
   div.appendChild(ul);
+  var totalSales = 0;
   for (var i in store.hourlySales) {
     var li = document.createElement('li');
     li.textContent = getHourAsText(i) + ': ' + store.hourlySales[i] + ' cookies';
     ul.appendChild(li);
+    totalSales += store.hourlySales[i];
   }
+  li = document.createElement('li');
+  li.textContent = 'Total: ' + totalSales + ' cookies';
+  ul.appendChild(li);
 }
 
 for (var i in stores) {
