@@ -27,6 +27,18 @@ Bakery.prototype.setHourlySales = function(hour) {
   this.hourlySales[hour] = this.createCookieSales();
 };
 
+Bakery.prototype.render = function() {
+  var totalSales = 0;
+  var tR = document.createElement('tr');
+  addElement(tR, 'th', this.location);
+  for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
+    totalSales += this.hourlySales[time];
+    addElement(tR, 'td', this.hourlySales[time]);
+  }
+  addElement(tR, 'td', totalSales);
+  tBody.appendChild(tR);
+};
+
 var firstAndPike = new Bakery ('1st and Pike', 23, 65, 6.3);
 var seaTacAirport = new Bakery ('SeaTac Airport', 3, 24, 1.2);
 var seattleCenter = new Bakery ('Seattle Center', 11, 38, 3.7);
@@ -86,15 +98,7 @@ function createTableHeader() {
 //Create the body of the table
 function createTableBody() {
   for (var store in stores) {
-    var totalSales = 0;
-    var tR = document.createElement('tr');
-    addElement(tR, 'th', stores[store].location);
-    for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
-      totalSales += stores[store].hourlySales[time];
-      addElement(tR, 'td', stores[store].hourlySales[time]);
-    }
-    addElement(tR, 'td', totalSales);
-    tBody.appendChild(tR);
+    stores[store].render();
   }
 }
 
