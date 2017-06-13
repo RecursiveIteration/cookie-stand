@@ -1,5 +1,8 @@
 'use strict';
 
+var firstHourOfBusiness = 8; //8:00 am
+var lastHourOfBusiness = 19; //7 pm
+
 function randomNumber (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -40,48 +43,85 @@ var stores = [
 
 function setAllSales (storeList) {
   for (var i in storeList) {
-    for (var j = 8; j <= 19; j++) {
+    for (var j = firstHourOfBusiness; j <= lastHourOfBusiness; j++) {
       storeList[i].setHourlySales(j);
     }
   }
 }
 
-function getHourAsText(hour) {
+function getHourAsText (hour) {
   if (hour < 12) {
-    return hour + 'am';
+    return hour + ':00 am';
   } else if (hour == 12) {
-    return hour + 'pm';
+    return hour + ':00 pm';
   } else {
-    return (hour - 12) + 'pm';
+    return (hour - 12) + ':00 pm';
   }
 }
 
 setAllSales(stores);
 
 var parentEl = document.getElementById('storeSales');
+addElement(parentEl, 'h2', 'Cookies Needed by Location and by Hour');
+var table = document.createElement('table');
+var tHead = document.createElement('thead');
+var tBody = document.createElement('tbody');
+var tFoot = document.createElement('tfoot');
 
-function addStoreSales (store) {
-  var div = document.createElement('div');
-  div.setAttribute('class', 'salesData'); //may use later for css formatting
-  parentEl.appendChild(div);
-  var p = document.createElement('p');
-  p.textContent = store.location;
-  div.appendChild(p);
-  //create the undordered list
-  var ul = document.createElement('ul');
-  div.appendChild(ul);
-  var totalSales = 0;
-  for (var i in store.hourlySales) {
-    var li = document.createElement('li');
-    li.textContent = getHourAsText(i) + ': ' + store.hourlySales[i] + ' cookies';
-    ul.appendChild(li);
-    totalSales += store.hourlySales[i];
+createTableHeader();
+createTableBody();
+createTableFooter();
+
+//Create the table's header row
+function createTableHeader() {
+  var headerRow = document.createElement('tr');
+  addElement(headerRow, 'th', '');
+  for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
+    addElement(headerRow, 'th', getHourAsText(time));
   }
-  li = document.createElement('li');
-  li.textContent = 'Total: ' + totalSales + ' cookies';
-  ul.appendChild(li);
+  addElement(headerRow, 'th', 'Total Daily Sales');
+  tHead.appendChild(headerRow);
 }
 
-for (var i in stores) {
-  addStoreSales(stores[i]);
+//Create the body of the table
+function createTableBody() {
+  for (var store in stores) {
+    var totalSales = 0;
+    var tR = document.createElement('tr');
+    addElement(tR, 'th', stores[store].location);
+    for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
+      totalSales += stores[store].hourlySales[time];
+      addElement(tR, 'td', stores[store].hourlySales[time]);
+    }
+    addElement(tR, 'td', totalSales);
+    tBody.appendChild(tR);
+  }
+}
+
+//Create the table's footer
+function createTableFooter() {
+  var grandTotal = 0; //sales for all hours of all stores
+  var footerRow = document.createElement('tr');
+  addElement(footerRow, 'th', 'Total Hourly Sales');
+  for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
+    var totalSales = 0; //Sales for all stores for *each* hour
+    for (var store in stores) {
+      totalSales += stores[store].hourlySales[time];
+    }
+    grandTotal += totalSales;
+    addElement(footerRow, 'td', totalSales);
+  }
+  addElement(footerRow, 'td', grandTotal);
+  tFoot.appendChild(footerRow);
+}
+
+table.appendChild(tHead);
+table.appendChild(tBody);
+table.appendChild(tFoot);
+parentEl.appendChild(table);
+
+function addElement (parent, elementType, value) {
+  var el = document.createElement(elementType);
+  el.textContent = value;
+  parent.appendChild(el);
 }
