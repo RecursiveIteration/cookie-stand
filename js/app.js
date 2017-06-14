@@ -23,11 +23,17 @@ Bakery.prototype.createCookieSales = function () {
   return Math.ceil(this.avgCookiesPerCustomer * this.createHourlyCustomerCount());
 };
 
-Bakery.prototype.setHourlySales = function(hour) {
+Bakery.prototype.setHourlySales = function (hour) {
   this.hourlySales[hour] = this.createCookieSales();
 };
 
-Bakery.prototype.render = function() {
+Bakery.prototype.setDailySales = function () {
+  for(var i = firstHourOfBusiness; i <= lastHourOfBusiness; i++) {
+    this.setHourlySales(i);
+  }
+};
+
+Bakery.prototype.render = function () {
   var totalSales = 0;
   var tR = document.createElement('tr');
   addElement(tR, 'th', this.location);
@@ -38,7 +44,6 @@ Bakery.prototype.render = function() {
   addElement(tR, 'td', totalSales);
   tBody.appendChild(tR);
 };
-
 
 var firstAndPike = new Bakery ('1st and Pike', 23, 65, 6.3);
 var seaTacAirport = new Bakery ('SeaTac Airport', 3, 24, 1.2);
@@ -56,9 +61,7 @@ var stores = [
 
 function setAllSales (storeList) {
   for (var i in storeList) {
-    for (var j = firstHourOfBusiness; j <= lastHourOfBusiness; j++) {
-      storeList[i].setHourlySales(j);
-    }
+    storeList[i].setDailySales();
   }
 }
 
@@ -137,12 +140,14 @@ addLocation.addEventListener('submit',
   function (e) {
     e.preventDefault();
     var location = e.target.location.value;
-    var minCustomersPerHour = e.target.minCustomersPerHour.value;
-    var maxCustomersPerHour = e.target.maxCustomersPerHour.value;
-    var avgCookiesPerCustomer = e.target.avgCookiesPerCustomer.value;
+    var minCustomersPerHour = parseInt(e.target.minCustomersPerHour.value);
+    var maxCustomersPerHour = parseInt(e.target.maxCustomersPerHour.value);
+    var avgCookiesPerCustomer = parseInt(e.target.avgCookiesPerCustomer.value);
     var newLocation = new Bakery(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer);
-    newLocation.setHourlySales();
+    newLocation.setDailySales();
+    stores.push(newLocation);
     newLocation.render();
     addLocation.reset();
+    //TODO Fix footer to update with newLocation's data!
   }
 );
