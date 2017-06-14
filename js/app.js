@@ -39,6 +39,7 @@ Bakery.prototype.render = function() {
   tBody.appendChild(tR);
 };
 
+
 var firstAndPike = new Bakery ('1st and Pike', 23, 65, 6.3);
 var seaTacAirport = new Bakery ('SeaTac Airport', 3, 24, 1.2);
 var seattleCenter = new Bakery ('Seattle Center', 11, 38, 3.7);
@@ -129,3 +130,19 @@ function addElement (parent, elementType, value) {
   el.textContent = value;
   parent.appendChild(el);
 }
+
+var addLocation = document.getElementById('addLocation');
+
+addLocation.addEventListener('submit',
+  function (e) {
+    e.preventDefault();
+    var location = e.target.location.value;
+    var minCustomersPerHour = e.target.minCustomersPerHour.value;
+    var maxCustomersPerHour = e.target.maxCustomersPerHour.value;
+    var avgCookiesPerCustomer = e.target.avgCookiesPerCustomer.value;
+    var newLocation = new Bakery(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer);
+    newLocation.setHourlySales();
+    newLocation.render();
+    addLocation.reset();
+  }
+);

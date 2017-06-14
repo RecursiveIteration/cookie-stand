@@ -7,6 +7,23 @@
   <body>
     <div id="storeSales">
     </div>
+    <form id="addLocation">
+      <fieldset>
+        <legend>Store Location</legend>
+        <label>Location:</label>
+        <input name="location" type="text" />
+      </fieldset>
+      <fieldset>
+        <legend>Sales Data</legend>
+        <label>Minimum Customers Per Hour</label>
+        <input name="minCustomersPerHour" type="number" />
+        <label>Maximum Customers Per Hour</label>
+        <input name="maxCustomersPerHour" type="number" />
+        <label>Average Cookies Purchased Per Customer</label>
+        <input name="avgCookiesPerCustomer" type="number" />
+      </fieldset>
+      <button type="submit">Add Location</button>
+    </form>
     <script src="js/app.js"></script>
   </body>
 </html>
