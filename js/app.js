@@ -2,6 +2,7 @@
 
 var firstHourOfBusiness = 8; //8:00 am
 var lastHourOfBusiness = 19; //7 pm
+var footerSums = []; //array to store elements of the table footer for hourly sales totals.
 
 function randomNumber (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -108,19 +109,23 @@ function createTableBody() {
 
 //Create the table's footer
 function createTableFooter() {
-  var grandTotal = 0; //sales for all hours of all stores
   var footerRow = document.createElement('tr');
   addElement(footerRow, 'th', 'Total Hourly Sales');
   for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
-    var totalSales = 0; //Sales for all stores for *each* hour
-    for (var store in stores) {
-      totalSales += stores[store].hourlySales[time];
-    }
-    grandTotal += totalSales;
-    addElement(footerRow, 'td', totalSales);
+    footerSums[time] = addElement(footerRow, 'td', '');
   }
-  addElement(footerRow, 'td', grandTotal);
+  updateFooter();
   tFoot.appendChild(footerRow);
+}
+
+function updateFooter() {
+  for (var time = firstHourOfBusiness; time <= lastHourOfBusiness; time++) {
+    var hourlyTotal = 0;
+    for (var store in stores) {
+      hourlyTotal += stores[store].hourlySales[time];
+    }
+    footerSums[time].textContent = hourlyTotal;
+  }
 }
 
 table.appendChild(tHead);
@@ -132,6 +137,7 @@ function addElement (parent, elementType, value) {
   var el = document.createElement(elementType);
   el.textContent = value;
   parent.appendChild(el);
+  return el;
 }
 
 var addLocation = document.getElementById('addLocation');
@@ -140,14 +146,14 @@ addLocation.addEventListener('submit',
   function (e) {
     e.preventDefault();
     var location = e.target.location.value;
-    var minCustomersPerHour = parseInt(e.target.minCustomersPerHour.value);
-    var maxCustomersPerHour = parseInt(e.target.maxCustomersPerHour.value);
-    var avgCookiesPerCustomer = parseInt(e.target.avgCookiesPerCustomer.value);
+    var minCustomersPerHour = parseFloat(e.target.minCustomersPerHour.value);
+    var maxCustomersPerHour = parseFloat(e.target.maxCustomersPerHour.value);
+    var avgCookiesPerCustomer = parseFloat(e.target.avgCookiesPerCustomer.value);
     var newLocation = new Bakery(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer);
     newLocation.setDailySales();
     stores.push(newLocation);
     newLocation.render();
+    updateFooter();
     addLocation.reset();
-    //TODO Fix footer to update with newLocation's data!
   }
 );
