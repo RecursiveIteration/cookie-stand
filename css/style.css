@@ -37,3 +37,21 @@ img {
   margin: auto;
   width: 30%;
 }
+
+table {
+  border: 3px solid #d2901f;
+  padding: 5px;
+  background-color: #1b1605;
+}
+
+th {
+  color: black;
+  background-color: #d6d9b7;
+  padding: 5px;
+}
+
+td {
+  color: black;
+  background-color: #d6d9b7;
+  padding: 5px;
+}

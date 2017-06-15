@@ -146,9 +146,24 @@ addLocation.addEventListener('submit',
   function (e) {
     e.preventDefault();
     var location = e.target.location.value;
+    if (!isValidLocation(location)) {
+      return null;
+    }
     var minCustomersPerHour = parseFloat(e.target.minCustomersPerHour.value);
+    if (!isValidNumber(minCustomersPerHour)) {
+      alert('Minimum Customers Per Hour must be a positive number.');
+      return null;
+    }
     var maxCustomersPerHour = parseFloat(e.target.maxCustomersPerHour.value);
+    if (!isValidNumber(maxCustomersPerHour, minCustomersPerHour)) {
+      alert('Maximum Customers Per Hour must be a positive number and must be greater than Minimum Customers Per Hour');
+      return null;
+    }
     var avgCookiesPerCustomer = parseFloat(e.target.avgCookiesPerCustomer.value);
+    if (!isValidNumber(avgCookiesPerCustomer)) {
+      alert('Average Cookies Purchased Per Customer must be a positive number.');
+      return null;
+    }
     var newLocation = new Bakery(location, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer);
     newLocation.setDailySales();
     stores.push(newLocation);
@@ -157,3 +172,41 @@ addLocation.addEventListener('submit',
     addLocation.reset();
   }
 );
+
+function isValidLocation (location) {
+  //check if name is blank
+  if (!location) {
+    alert('Please enter a location name.');
+    return false;
+  }
+  //check if name already exists
+  for (var store in stores) {
+    if (stores[store].location.toLowerCase() === location.toLowerCase()) {
+      alert('Please enter a unique name for this location.');
+      return false;
+    }
+  }
+  //name is ok
+  return true;
+}
+
+function isValidNumber(number, minimum) {
+  //No minimum specified, a positive number is expected.
+  if (!minimum) {
+    if (number <= 0) {
+      return false;
+    }
+    return true;
+  }
+  //Minimum value was specified, number must be > minimum
+  if (number <= minimum) {
+    return false;
+  }
+  return true;
+}
+
+
+
+
+
+// blah
