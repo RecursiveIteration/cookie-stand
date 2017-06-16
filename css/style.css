@@ -1,41 +1,72 @@
 * {
-  background-color: #042506;
-  color: #f0e950;
+  background-color: #c7be72;
+  color: #100722;
 }
 
 h1 {
   font-size: 3.5em;
   font-family: Pacifico, cursive;
   text-align: center;
+  margin-bottom: 5px;
 }
 
-nav {
-  font-family: Helvetica, sans-serif;
+header img {
+  height: 100px;
+  width: auto;
+  display: block;
+  margin: auto;
 }
 
-.navBar {
-  display: inline;
+#locations article:nth-of-type(2n) img {
+  float: left;
+}
+
+#locations article:nth-of-type(2n + 1) img {
+  float: right;
+}
+
+#about_us img {
+  float: right;
+}
+
+#about_us p {
+  vertical-align: left;
+}
+
+#services img {
+  float: left;
+}
+
+#services p {
+  vertical-align: left;
+}
+
+hr {
+  clear: both;
 }
 
 nav p {
-  color: #b6f4fa;
+  display: inline-block;
+  margin: 0 0 0 5%;
+  padding: 0;
+  width: 15%;
+  font-size: 1.2em;
 }
 
-nav ul li{
-  display: inline;
+nav ul li {
+  display: inline-block;
+  list-style-type: none;
+  width: 15%;
 }
 
-#construction {
-  font-size: 1.5em;
-  font-family: Georgia, serif;
-  color: #b6f4fa;
-  text-align: center;
+li a {
+  text-decoration: none;
 }
 
-img {
-  display: block;
-  margin: auto;
-  width: 30%;
+article img {
+  float: left;
+  width: 200px;
+  height: auto;
 }
 
 table {
